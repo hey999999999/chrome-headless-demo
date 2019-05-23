@@ -2,11 +2,14 @@ const fs = require('fs-extra');
 const assert = require('assert');
 const puppeteer = require('puppeteer');
 
+const user = ''; //TODO:
+const pass = ''; //TODO:
+
 (async() => {
 
   const browser = await puppeteer.launch({
     args:[
-      '--proxy-server=192.168.30.130:80',
+      //'--proxy-server=192.168.30.130:80', //TODO:プロキシ不要なら外す
       '--ignore-certificate-errors',
       '--no-sandbox',
       "--disable-setuid-sandbox",
@@ -51,13 +54,14 @@ const puppeteer = require('puppeteer');
     });
   }
   try{
+    //ログイン
     //const res2 = await page.waitForNavigation({waitUntil:'domcontentloaded'});
     const form_id = await page.waitForSelector('#j_username');
     await page.waitFor(2000);
     //console.log('form_id>>>',form_id);
-    await form_id.type('');//TODO:SAP ID
+    await form_id.type(user);
     const form_pw = await page.waitForSelector('#j_password');
-    await form_pw.type('');//TODO: password
+    await form_pw.type(pass);
     //const logon_btn = await page.waitForSelector('#logOnFormSubmit');
     //await logon_btn.click();
     await page.evaluate(()=>document.querySelector('#logOnFormSubmit').click())
